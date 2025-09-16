@@ -7,19 +7,19 @@
               <mat-icon>add_circle</mat-icon>
           </button>
       </div>
-        <mat-card-subtitle class="mat-mdc-card-subtitle">{{categories.data.length}} marques</mat-card-subtitle>
+        <mat-card-subtitle class="mat-mdc-card-subtitle">{{categories.data.length}} catégories</mat-card-subtitle>
     </mat-card-content>
     <div class="table-responsive">
         <mat-progress-bar mode="indeterminate" value="40" *ngIf="isLoading"></mat-progress-bar>
-      <div class="search-container m-8 ">
+      <!-- <div class="search-container m-8 ">
         <mat-form-field appearance="outline">
           <mat-label>Recherche</mat-label>
           <input matInput (input)="applyFilter($event)" placeholder="Rechercher un modèle">
         </mat-form-field>
-      </div>
+      </div> -->
         <table mat-table [dataSource]="categories"  class="w-100" *ngIf="!isLoading">
             <!-- Profile Column -->
-            <ng-container matColumnDef="image">
+            <!-- <ng-container matColumnDef="image">
                 <th mat-header-cell *matHeaderCellDef class="mat-subtitle-1 f-s-14">Photo</th>
                 <td mat-cell *matCellDef="let element">
                     <div class="d-flex align-items-center">
@@ -28,7 +28,7 @@
                         </div>
                     </div>
                 </td>
-            </ng-container>
+            </ng-container> -->
 
             <!-- Hour Rate Column -->
             <ng-container matColumnDef="nom">
@@ -41,14 +41,21 @@
             </ng-container>
 
             <!-- Symbol Column -->
-            <ng-container matColumnDef="active">
+            <ng-container matColumnDef="code">
                 <th mat-header-cell *matHeaderCellDef class="mat-subtitle-1 f-s-14">
                     Est actif
                 </th>
                 <td mat-cell *matCellDef="let element">
-                    <span class="{{ element.active ?'bg-light-success text-success':'bg-light-error text-error' }} f-s-12 f-w-500 p-x-10 p-y-4 rounded-pill">
-                        {{ element.active ? "OUI" : "NON" }}
-                    </span>
+                    <p class="text-muted m-b-8 f-s-14 m-t-0">{{ element.code }}</p>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="dateCreation">
+                <th mat-header-cell *matHeaderCellDef class="mat-subtitle-1 f-s-14">
+                    Date de création
+                </th>
+                <td mat-cell *matCellDef="let element">
+                    <p class="text-muted m-b-8 f-s-14 m-t-0">{{ element.dateCreation | date: 'dd-MM-YYYY' }}</p>
                 </td>
             </ng-container>
 
@@ -63,25 +70,13 @@
                         <mat-icon>more_vert</mat-icon>
                     </button>
                     <mat-menu #menu="matMenu" xPosition="before">
-
-                      <a (click)="updateStatus(element)"
-                         class="d-flex align-items-center text-decoration-none p-y-10 p-x-16 mat-body-1 gap-8">
-                        @if(element.active){
-                          <i-tabler name="x" class="icon-18"></i-tabler>
-                          <span>Désactiver</span>
-                        } @else {
-                          <i-tabler name="check" class="icon-18"></i-tabler>
-                          <span>Activer</span>
-                        }
-
-                      </a>
                         <a (click)="updateCategorie(element)"
-                            class="d-flex align-items-center text-decoration-none p-y-10 p-x-16 mat-body-1 gap-8">
+                            class="d-flex align-items-center text-decoration-none p-y-10 p-x-16 mat-body-1 gap-8 cursor-pointer">
                             <i-tabler name="edit" class="icon-18"></i-tabler>
                             <span>Modifier</span>
                         </a>
                         <a (click)="deleteCategorie(element)"
-                            class="d-flex align-items-center text-decoration-none p-y-10 p-x-16 mat-body-1 gap-8">
+                            class="d-flex align-items-center text-decoration-none p-y-10 p-x-16 mat-body-1 gap-8 cursor-pointer">
                             <i-tabler name="trash" class="icon-18"></i-tabler>
                             <span>Supprimer</span>
                         </a>
@@ -92,7 +87,11 @@
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
         </table>
-      <mat-paginator [pageSizeOptions]="[3, 6, 10]" showFirstLastButtons></mat-paginator>
+        <mat-paginator class="paginator c-paginator" *ngIf="!isLoading && categories?.data?.length != 0" #paginator
+                      (page)="pageChanged($event)"
+                      [length]="length" [pageIndex]="pageIndex" [pageSize]="pageSize"
+                      [pageSizeOptions]="pageSizeOptions">
+        </mat-paginator>
 
     </div>
     </mat-card>

@@ -7,13 +7,13 @@ import { Produit } from '../produit';
 })
 export class ProduitService extends GenericService<Produit>{
   protected override uriGet(): string {
-    return "produit/list"
+    return "produits"
   }
   protected override uriPost(): string {
-    return "produit/list"
+    return "produits"
   }
   protected override uriPut(): string {
-    return "produit/update/"
+    return "produits/"
   }
 
 

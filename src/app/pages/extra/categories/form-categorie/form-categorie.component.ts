@@ -60,21 +60,15 @@ export class FormCategorieComponent {
     }else if(this.action == ACTIONTYPE.EDIT){
       this.modalTitle = 'Modification de catégorie'
       this.initializeForm(data.item);
+      this.selectedCategorie = data.item.id
     }
   }
 
   initializeForm(data?: any): void {
-    if (this.action == ACTIONTYPE.NEW){
-      this.categorieForm = this.fb.group({
-        nom: [data?.nom ? data?.nom :'', [Validators.required]],
-        image : ["", Validators.required],
-      });
-    }else {
-      this.categorieForm = this.fb.group({
-        nom: [data?.nom ? data?.nom :'', [Validators.required]]
-      });
-    }
-    this.selectedCategorie = data ? data.slug : "";
+    this.categorieForm = this.fb.group({
+      nom: [data?.nom ? data?.nom :'', [Validators.required]],
+      code : [data?.code ? data?.code :'', Validators.required],
+    });
   }
 
   onSubmit(): void {
@@ -82,15 +76,6 @@ export class FormCategorieComponent {
     if (!this.categorieForm.valid) {
       return;
     }
-
-    console.log("this.choosedImage", this.choosedImage);
-
-    // Préparer le FormData
-    const formData = new FormData();
-    if (this.action === ACTIONTYPE.NEW || (this.action === ACTIONTYPE.EDIT && this.selectedFile)) {
-      formData.append('image', this.selectedFile);
-    }
-    formData.append('nom', this.categorieForm.get('nom')?.value);
     const actionText = this.action === ACTIONTYPE.NEW ? 'ajouter' : 'modifier';
 
     Swal.fire({
@@ -107,15 +92,13 @@ export class FormCategorieComponent {
       this.isLoading = true;
 
       const request$ = this.action === ACTIONTYPE.EDIT
-          ? this.categorieService.updateWithImage(formData, this.selectedCategorie)
-          : this.categorieService.addWithImage(formData);
-
+          ? this.categorieService.update(this.categorieForm.value, this.selectedCategorie)
+          : this.categorieService.add(this.categorieForm.value);
       request$.subscribe({
         next: (response) => {
           if (response) {
-            console.log(`Réponse ${this.action === ACTIONTYPE.EDIT ? 'edit' : 'add'}:`, response);
             const successMessage = this.action === ACTIONTYPE.EDIT
-                ? "Mise à jour réussi"
+                ? "Catégorie modifiée avec succès"
                 : "Catégorie ajoutée avec succès";
             this.snackBarService.sendNotification(successMessage, SNACKTYPE.SUCCESS);
             this.matDialogRef.close(response);
@@ -127,24 +110,6 @@ export class FormCategorieComponent {
         }
       });
     });
-  }
-
-
-  onFileSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    if (input?.files?.length) {
-      this.selectedFile = input.files[0];
-      const reader = new FileReader();
-      reader.onload = () => {
-        // Le résultat est le contenu base64 du fichier
-        const base64String = reader.result as string;
-        console.log('Base64 String:', base64String);
-        this.selectedFileName = base64String;
-        this.categorieForm.get('image')?.setValue(base64String)
-      };
-    }else {
-      this.selectedFile = null;
-    }
   }
 
 

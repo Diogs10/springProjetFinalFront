@@ -3,220 +3,71 @@
     <div class="title">{{ modalTitle }}</div>
     <mat-icon class="closeBtn" (click)="matDialogRef.close()">close</mat-icon>
   </div>
+
   <mat-card class="cardWithShadow theme-card">
     <mat-card-content class="b-t-1">
       <form [formGroup]="produitForm" (ngSubmit)="onSubmit()">
-        <mat-horizontal-stepper [linear]="true" #stepper>
-          <!-- Step 1: Infos de base -->
-          <mat-step  label="Infos de base" [completed]="checkStepIsValid(steps.step1)">
-            <div class="row">
-              <!-- Nom -->
-              <div class="col-12 col-md-6">
-                <mat-label class="f-w-600 m-b-8 d-block">Nom du produit</mat-label>
-                <mat-form-field appearance="outline" class="w-100" color="primary">
-                  <input matInput placeholder="Le libellé du produit" formControlName="nom" />
-                  <mat-error *ngIf="produitForm.get('nom')?.touched && produitForm.get('nom')?.invalid">
-                    Le nom est obligatoire
-                  </mat-error>
-                </mat-form-field>
-              </div>
-              <!-- Categorie -->
-              <div class="col-12 col-md-6">
-                <mat-label class="f-w-600 m-b-8 d-block">Catégorie</mat-label>
-                <mat-form-field appearance="outline" class="w-100">
-                  <mat-select formControlName="categorie">
-                    <mat-option [value]="option.id" *ngFor="let option of categorieList">{{
-                      option.nom
-                    }}</mat-option>
-                  </mat-select>
-                  <mat-error *ngIf="produitForm.get('categorie')?.touched && produitForm.get('categorie')?.invalid">
-                    La catégorie est obligatoire
-                  </mat-error>
-                </mat-form-field>
-              </div>
-              <!-- Marque -->
-              <div class="col-12 col-md-6">
-                <mat-label class="f-w-600 m-b-8 d-block">Marque</mat-label>
-                <mat-form-field appearance="outline" class="w-100">
-                  <mat-select formControlName="marque">
-                    <mat-option [value]="option.id" *ngFor="let option of marqueList">{{ option.marque }}</mat-option>
-                  </mat-select>
-                  <mat-error *ngIf="produitForm.get('marque')?.touched && produitForm.get('marque')?.invalid">
-                    La marque est obligatoire
-                  </mat-error>
-                </mat-form-field>
-              </div>
-              <!-- Modele -->
-              <div class="col-12 col-md-6">
-                <mat-label class="f-w-600 m-b-8 d-block">Modèle</mat-label>
-                <mat-form-field appearance="outline" class="w-100">
-                  <mat-select formControlName="modele">
-                    <mat-option [value]="option.id" *ngFor="let option of modeleList">{{ option.modele }}</mat-option>
-                  </mat-select>
-                  <mat-error *ngIf="produitForm.get('modele')?.touched && produitForm.get('modele')?.invalid">
-                    Le modèle est obligatoire
-                  </mat-error>
-                </mat-form-field>
-              </div>
-              <!-- Description -->
-              <div class="col-12 ">
-                <mat-label class="f-w-600 m-b-8 d-block">Description</mat-label>
-                <mat-form-field appearance="outline" class="w-100" color="primary">
-                  <textarea rows="3" matInput placeholder="Faites une petite description" formControlName="description"></textarea>
-                  <mat-error *ngIf="produitForm.get('description')?.touched && produitForm.get('description')?.invalid">
-                    La description est obligatoire
-                  </mat-error>
-                </mat-form-field>
-              </div>
-            </div>
-            <button mat-flat-button type="button" color="primary" [disabled]="!checkStepIsValid(steps.step1)" mat-button matStepperNext>Suivant</button>
-          </mat-step>
-          <!-- Step 2: Spécifications -->
-          <mat-step label="Spécifications" [completed]="checkStepIsValid(steps.step2)">
-            <div class="row">
-              <!-- Purete -->
-              <div class="col-12 col-md-6">
-                <mat-label class="f-w-600 m-b-8 d-block">Pureté</mat-label>
-                <mat-form-field appearance="outline" class="w-100">
-                  <mat-select formControlName="purete">
-                    <mat-option [value]="option.id" *ngFor="let option of pureteList">{{option.purete}} K</mat-option>
-                  </mat-select>
-                  <mat-error *ngIf="produitForm.get('purete')?.touched && produitForm.get('purete')?.invalid">
-                    La pureté est obligatoire
-                  </mat-error>
-                </mat-form-field>
-              </div>
-              <!-- Matiere -->
-              <div class="col-12 col-md-6">
-                <mat-label class="f-w-600 m-b-8 d-block">Type de matériau</mat-label>
-                <mat-form-field appearance="outline" class="w-100">
-                  <mat-select formControlName="matiere">
-                    <mat-option [value]="option.value" *ngFor="let option of matieresList">{{
-                      option.label
-                    }}</mat-option>
-                  </mat-select>
-                  <mat-error *ngIf="produitForm.get('matiere')?.touched && produitForm.get('matiere')?.invalid">
-                    Le champ est obligatoire
-                  </mat-error>
-                </mat-form-field>
-              </div>
-              <!-- Fait pour -->
-              <div class="col-12 col-md-6">
-                <mat-label class="f-w-600 m-b-8 d-block">Fait pour</mat-label>
-                <mat-form-field appearance="outline" class="w-100">
-                  <mat-select formControlName="genre">
-                    <mat-option [value]="option.value" *ngFor="let option of genresPossible">{{
-                      option.label
-                    }}</mat-option>
-                  </mat-select>
-                  <mat-error *ngIf="produitForm.get('matiere')?.touched && produitForm.get('matiere')?.invalid">
-                    Le champ est obligatoire
-                  </mat-error>
-                </mat-form-field>
-              </div>
-              <!-- Photo -->
-              <div class="col-12 col-md-6">
-                <mat-label class="f-w-600 m-b-8 d-block">Photo du produit</mat-label>
-                <div class="file-input-container">
-                  <button mat-raised-button color="primary" (click)="fileInput.click()">
-                    <mat-icon>cloud_upload</mat-icon>
-                    <span>Télécharger une image</span>
-                  </button>
-                  <input
-                    type="file"
-                    #fileInput
-                    formControlName="image"
-                    (change)="onFileSelected($event)"
-                    hidden
-                    accept="image/*"
-                  />
-                  <span class="file-name">{{ selectedFileName || 'Aucun fichier sélectionné' }}</span>
-                </div>
-                <mat-error *ngIf="produitForm.get('image')?.touched && produitForm.get('image')?.invalid">
-                  L'image est obligatoire
-                </mat-error>
-              </div>
-            </div>
-            <button mat-stroked-button color="warn" mat-button matStepperPrevious>Retour</button>
-            &nbsp;
-            <button mat-flat-button type="button" color="primary" mat-button matStepperNext [disabled]="!checkStepIsValid(steps.step2)">Suivant</button>
-          </mat-step>
-          <!-- Step 3: Paramètres prix -->
-          <mat-step label="Paramètres prix" [completed]="checkStepIsValid(steps.step3)">
-            <div class="row">
-              <!-- Prix HT -->
-              <div class="col-12 col-md-6">
-                <mat-label class="f-w-600 m-b-8 d-block">Prix en grammes</mat-label>
-                <mat-form-field appearance="outline" class="w-100" color="primary">
-                  <input
-                    type="number"
-                    matInput
-                    placeholder="Prix en grammes"
-                    formControlName="prix_vente_grammes"
-                    (input)="calculateTax()"
-                  />
-                  <mat-error
-                    *ngIf="
-                      produitForm.get('prix_vente_grammes')?.touched &&
-                      produitForm.get('prix_vente_grammes')?.invalid
-                    "
-                  >
-                    Le prix de vente est obligatoire
-                  </mat-error>
-                </mat-form-field>
-              </div>
-              <!-- Prix TTC -->
-              <div class="col-12 col-md-6">
-                <mat-label class="f-w-600 m-b-8 d-block">Prix TTC (18%)</mat-label>
-                <mat-form-field appearance="outline" class="w-100" color="primary">
-                  <input matInput placeholder="Prix TTC" formControlName="prix_avec_tax" readonly />
-                  <mat-error
-                    *ngIf="
-                      produitForm.get('prix_avec_tax')?.touched &&
-                      produitForm.get('prix_avec_tax')?.invalid
-                    "
-                  >
-                    Le prix TTC est obligatoire
-                  </mat-error>
-                </mat-form-field>
-              </div>
-              <!-- Quantité en stock -->
-              <div class="col-12 col-md-4">
-                <mat-label class="f-w-600 m-b-8 d-block">Quantité en stock</mat-label>
-                <mat-form-field appearance="outline" class="w-100" color="primary">
-                  <input type="number" matInput placeholder="Quantité en stock" formControlName="quantite_en_stock" />
-                  <mat-error *ngIf="produitForm.get('quantite_en_stock')?.touched && produitForm.get('quantite_en_stock')?.invalid">
-                    La quantité en stock est obligatoire
-                  </mat-error>
-                </mat-form-field>
-              </div>
-              <!-- Poids -->
-              <div class="col-12 col-md-4">
-                <mat-label class="f-w-600 m-b-8 d-block">Poids (grammes)</mat-label>
-                <mat-form-field appearance="outline" class="w-100" color="primary">
-                  <input type="number" matInput placeholder="Quantité en stock" formControlName="poids" />
-                  <mat-error *ngIf="produitForm.get('poids')?.touched && produitForm.get('poids')?.invalid">
-                    Le poids en stock est obligatoire
-                  </mat-error>
-                </mat-form-field>
-              </div>
-              <!-- Taille -->
-              <div class="col-12 col-md-4">
-                <mat-label class="f-w-600 m-b-8 d-block">Taille</mat-label>
-                <mat-form-field appearance="outline" class="w-100" color="primary">
-                  <input type="number" matInput placeholder="Taille" formControlName="taille" />
-                  <mat-error *ngIf="produitForm.get('taille')?.touched && produitForm.get('taille')?.invalid">
-                    La taille en stock est obligatoire
-                  </mat-error>
-                </mat-form-field>
-              </div>
-            </div>
-            <button mat-stroked-button color="warn" mat-button matStepperPrevious>Retour</button>
-            &nbsp;
-            <button mat-flat-button color="primary" *ngIf="action == 'edit'" [disabled]="!checkStepIsValid(steps.step2)" mat-button matStepperNext>Modifier</button>
-            <button mat-flat-button color="primary" *ngIf="action == 'new'"[disabled]="!checkStepIsValid(steps.step2)" mat-button matStepperNext>Valider</button>
-          </mat-step>
-        </mat-horizontal-stepper>
+        <div class="row">
+          <!-- Code -->
+          <div class="col-12">
+            <mat-label class="f-w-600 m-b-8 d-block">Code</mat-label>
+            <mat-form-field appearance="outline" class="w-100" color="primary">
+              <input matInput placeholder="Ex: PHONE12" formControlName="code" />
+              <mat-error *ngIf="code?.touched && code?.invalid">Le code est obligatoire</mat-error>
+            </mat-form-field>
+          </div>
+
+          <!-- Nom -->
+          <div class="col-12">
+            <mat-label class="f-w-600 m-b-8 d-block">Nom</mat-label>
+            <mat-form-field appearance="outline" class="w-100" color="primary">
+              <input matInput placeholder="Ex: iPhone 12" formControlName="nom" />
+              <mat-error *ngIf="nom?.touched && nom?.invalid">Le nom est obligatoire</mat-error>
+            </mat-form-field>
+          </div>
+
+          <!-- Prix -->
+          <div class="col-12">
+            <mat-label class="f-w-600 m-b-8 d-block">Prix</mat-label>
+            <mat-form-field appearance="outline" class="w-100" color="primary">
+              <input matInput type="number" placeholder="Ex: 1 000" formControlName="prix"/>
+              <mat-error *ngIf="prix?.touched && prix?.invalid">Le prix est obligatoire</mat-error>
+            </mat-form-field>
+          </div>
+
+          <!-- Catégorie -->
+          <div class="col-12">
+            <mat-label class="f-w-600 m-b-8 d-block">Catégorie</mat-label>
+            <mat-form-field appearance="outline" class="w-100" color="primary">
+              <mat-select formControlName="categorieId" placeholder="Sélectionner une catégorie">
+                <mat-option *ngFor="let cat of categories" [value]="cat.id">
+                  {{ cat.nom }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="categorieId?.touched && categorieId?.invalid">La catégorie est obligatoire</mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <!-- Boutons -->
+        <div class="m-t-12">
+            <button *ngIf="action == 'new'" mat-flat-button color="primary" class="m-r-8" [disabled]="!produitForm.valid" (click)="onSubmit()">
+              @if(isLoading){
+                <mat-spinner *ngIf="isLoading" diameter="20" class="general-loader"></mat-spinner>
+              } @else {
+                <span>Ajouter</span>
+              }
+            </button>
+            <button *ngIf="action == 'edit'" mat-flat-button color="primary" class="m-r-8" [disabled]="!produitForm.valid" (click)="onSubmit()">
+              @if(isLoading){
+                <mat-spinner *ngIf="isLoading" diameter="20" class="general-loader"></mat-spinner>
+              } @else {
+                <span>Modifier</span>
+              }
+            </button>
+
+          <button mat-stroked-button color="warn" type="button" (click)="onCancel()">Annuler</button>
+        </div>
       </form>
     </mat-card-content>
   </mat-card>

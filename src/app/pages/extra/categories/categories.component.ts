@@ -15,7 +15,7 @@ import {DisplayPhotoComponent} from 'src/app/shared/display-photo/display-photo.
 import {ACTIONTYPE} from "../../../enums/action-type";
 import {FormCategorieComponent} from "./form-categorie/form-categorie.component";
 import {MatTableDataSource} from "@angular/material/table";
-import {MatPaginator} from "@angular/material/paginator";
+import {MatPaginator, PageEvent} from "@angular/material/paginator";
 import Swal from "sweetalert2";
 import {SNACKTYPE} from "../../../enums/snack-type";
 import {SnackService} from "../../../shared/services/snack.service";
@@ -42,36 +42,43 @@ export class CategorieComponent implements OnInit{
     private matDialog: MatDialog,
     private snackBarService: SnackService,
   ){}
-  displayedColumns: string[] = ['image', 'nom', 'active', 'menu'];
+  displayedColumns: string[] = [ 'nom', 'code', 'dateCreation', 'menu'];
   isLoading: boolean = false
   categories:  MatTableDataSource<Categorie> = new MatTableDataSource();
   matDialogRef:any;
+  length: number = 0;
+  pageSizeOptions = [5, 10, 25, 100, 500, 1000];
+  pageIndex: number = 0;
+  pageSize: number = 5;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   ngOnInit(): void {
-    this.getCategories();
+    this.getCategories(this.pageIndex, this.pageSize);
   }
 
   ngAfterViewInit() {
-    this.categories.paginator = this.paginator;
+    // this.categories.paginator = this.paginator;
   }
 
-  getCategories(){
+  getCategories(page:number,pageSize:number){
     this.isLoading = true
-    this.categorieService.getAll().subscribe({
+    this.categorieService.list('categories', page, pageSize).subscribe({
       next:(response)=>{
           this.isLoading = false
-        response = response.map((categorie:Categorie)=>{
-          return {...categorie, image: environment.baseIMGURL+categorie.image}
-        });
-          this.categories.data = response.reverse();
-
+          this.categories = new MatTableDataSource(response.data.content);
+          this.length = response.data.totalElements;
       },
       error: (error) => {
         this.snackBarService.sendNotification(error.message, SNACKTYPE.ERROR);
         this.isLoading = false;
       }
     })
+  }
+
+  pageChanged(event: PageEvent) {
+    this.pageSize = event.pageSize;
+    this.pageIndex = event.pageIndex;
+    this.getCategories(this.pageIndex, this.pageSize);
   }
 
   getClassStatus(status: string){
@@ -101,8 +108,7 @@ export class CategorieComponent implements OnInit{
       this.matDialogRef.afterClosed().subscribe((resp: any) => {
         console.log("resr parent", resp)
         if(resp != null){
-            resp = {...resp, image: environment.baseIMGURL+resp.image}
-            this.categories.data = [...this.categories.data, resp];
+          this.getCategories(this.pageIndex, this.pageSize);
         }
       });
     }
@@ -123,9 +129,7 @@ export class CategorieComponent implements OnInit{
     this.matDialogRef.afterClosed().subscribe((resp: any) => {
       console.log("resr parent", resp)
       if(resp != null){
-          resp = {...resp, image: environment.baseIMGURL+resp.image}
-          this.categories.data = this.categories.data.filter(categorie => categorie.slug != resp.slug);
-          this.categories.data = [...this.categories.data, resp];
+        this.getCategories(this.pageIndex, this.pageSize);
       }
     });
   }
@@ -140,9 +144,9 @@ export class CategorieComponent implements OnInit{
     }).then((result) => {
       if (result["value"]) {
         this.isLoading = true;
-        this.categorieService.delete(element.slug).subscribe({
+        this.categorieService.delete(element.id).subscribe({
           next:(response)=>{
-            this.categories.data = [...this.categories.data.filter(categorie => categorie.slug !== element.slug)];
+            this.getCategories(this.pageIndex, this.pageSize);
             this.snackBarService.sendNotification("La catégorie a bien été supprimée", SNACKTYPE.SUCCESS)
           },
           error: (error) => {
@@ -155,33 +159,6 @@ export class CategorieComponent implements OnInit{
 
   }
 
-  updateStatus(element : Categorie){
-    Swal.fire({
-      title: 'Confirmation',
-      text: `Voulez-vous vraiment ${!element.active ? "Activer" : "Désactiver"} la catégorie ${element.nom} ?`,
-      showCancelButton: true,
-      confirmButtonText: 'Oui',
-      cancelButtonText: 'Non'
-    }).then((result) => {
-      if (result["value"]) {
-        this.isLoading = true;
-        this.categorieService.update({"active":!element.active}, element.slug).subscribe({
-          next:(response)=>{
-            response = {...response, image: environment.baseIMGURL+response.image}
-            this.categories.data = [response,...this.categories.data.filter(categorie => categorie.slug !== element.slug)];
-            this.snackBarService.sendNotification(`La catégorie a bien été ${response.active ? 'activée' : 'désactivée'}`, SNACKTYPE.SUCCESS)
-          },
-          error: (error) => {
-            this.snackBarService.sendNotification(error.message, SNACKTYPE.ERROR);
-            this.isLoading = false;
-          },
-          complete : ()=>{
-            this.isLoading = false;
-          }
-        })
-      }
-    });
-  }
 
   applyFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -190,9 +167,4 @@ export class CategorieComponent implements OnInit{
       this.categories.paginator.firstPage();
     }
   }
-
-
-
-
-
 }

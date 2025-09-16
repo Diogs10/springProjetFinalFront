@@ -9,46 +9,34 @@
         <div class="row">
           <!-- marque name -->
           <div class="col-12">
-            <mat-label class="f-w-600 m-b-8 d-block">Nom de la catégorie</mat-label>
+            <mat-label class="f-w-600 m-b-8 d-block">Nom</mat-label>
             <mat-form-field appearance="outline" class="w-100" color="primary">
-              <input matInput placeholder="Le libellé de la catégorie" formControlName="nom" />
+              <input matInput placeholder="Le nom" formControlName="nom" />
               <mat-error *ngIf="categorieForm.get('nom')?.touched && categorieForm.get('nom')?.invalid">
-                Le libellé de la catégorie est obligatoire
+                Le nom est obligatoire
               </mat-error>
             </mat-form-field>
           </div>
           <div class="col-12">
-            <mat-label class="f-w-600 m-b-8 d-block">Photo de la catégorie</mat-label>
-            <div class="file-input-container">
-              <button mat-raised-button type="button" color="primary" (click)="fileInput.click()">
-                <mat-icon>cloud_upload</mat-icon>
-                <span>Charger une image</span>
-              </button>
-              <input
-                type="file"
-                #fileInput
-                formControlName="image"
-                (change)="onFileSelected($event)"
-                hidden
-                accept="image/*"
-              />
-              <span class="file-name">{{ selectedFileName || 'Aucun fichier sélectionné' }}</span>
-            </div>
-            <mat-error *ngIf="categorieForm.get('image')?.touched && categorieForm.get('image')?.invalid">
-              L'image est obligatoire
-            </mat-error>
+            <mat-label class="f-w-600 m-b-8 d-block">Code </mat-label>
+            <mat-form-field appearance="outline" class="w-100" color="primary">
+              <input matInput placeholder="Le code" formControlName="code"/>
+              <mat-error *ngIf="categorieForm.get('code')?.touched && categorieForm.get('code')?.invalid">
+                Le code est obligatoire
+              </mat-error>
+            </mat-form-field>
           </div>
         </div>
         <!-- Boutons d'action -->
         <div class="m-t-12">
-            <button *ngIf="action == 'new'" mat-flat-button color="primary" class="m-r-8" [disabled]="!categorieForm.valid">
+            <button *ngIf="action == 'new'" mat-flat-button color="primary" class="m-r-8" [disabled]="!categorieForm.valid" (click)="onSubmit()">
               @if(isLoading){
                 <mat-spinner *ngIf="isLoading" diameter="20" class="general-loader"></mat-spinner>
               } @else {
                 <span>Ajouter</span>
               }
             </button>
-            <button *ngIf="action == 'edit'" mat-flat-button color="primary" class="m-r-8" [disabled]="!categorieForm.valid">
+            <button *ngIf="action == 'edit'" mat-flat-button color="primary" class="m-r-8" [disabled]="!categorieForm.valid" (click)="onSubmit()">
               @if(isLoading){
                 <mat-spinner *ngIf="isLoading" diameter="20" class="general-loader"></mat-spinner>
               } @else {

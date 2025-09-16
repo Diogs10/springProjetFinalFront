@@ -16,12 +16,12 @@ export const navItems: NavItem[] = [
   {
     displayName: 'Categories',
     iconName: 'solar:planet-3-line-duotone',
-    route: '/settings/categories',
+    route: '/categories',
   },
   {
     displayName: 'Produits',
     iconName: 'solar:archive-minimalistic-line-duotone',
-    route: '/ventes-produits/produits',
+    route: '/produits',
   },
   // {
   //   displayName: 'Ventes',

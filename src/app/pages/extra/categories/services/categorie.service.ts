@@ -10,13 +10,13 @@ import {environment} from "../../../../../environments/environment";
 })
 export class CategorieService extends GenericService<Categorie>{
   protected override uriGet(): string {
-    return "categorie/list"
+    return "categories"
   }
   protected override uriPost(): string {
-    return "categorie/list"
+    return "categories"
   }
   protected override uriPut(): string {
-    return "categorie/"
+    return "categories/"
   }
 
 

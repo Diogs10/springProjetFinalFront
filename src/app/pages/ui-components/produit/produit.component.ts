@@ -11,10 +11,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { ACTIONTYPE } from 'src/app/enums/action-type';
 import { Produit } from './produit';
 import { ProduitFormComponent } from './produit-form/produit-form.component';
-import { environment } from 'src/environments/environment';
 import { BadgerService } from 'src/app/shared/services/badger.service';
 import { Matiere } from 'src/app/enums/matiere';
-import { DisplayPhotoComponent } from 'src/app/shared/display-photo/display-photo.component';
 import {MatTableDataSource} from "@angular/material/table";
 import Swal from "sweetalert2";
 import {SNACKTYPE} from "../../../enums/snack-type";
@@ -31,7 +29,7 @@ import {MatPaginator, PageEvent} from "@angular/material/paginator";
     CommonModule,
     TablerIconsModule,
     MatProgressBarModule,
-    NgScrollbarModule
+    NgScrollbarModule,
   ],
   templateUrl: './produit.component.html',
   styleUrl: './produit.component.scss'
@@ -46,7 +44,6 @@ export class ProduitComponent implements OnInit{
   pageSizeOptions = [5, 10, 25, 100, 500, 1000];
   pageIndex: number = 0;
   pageSize: number = 5;
-  // displayedColumns: string[] = ['nom','prix_vente_grammes','genre','modele','purete','matiere','poids','quantite_en_stock','taille','categorie','menu'];
   displayedColumns: string[] = ['nom','code','prix','categorie','menu',];
   constructor(
     private produitService: ProduitService,
@@ -58,17 +55,12 @@ export class ProduitComponent implements OnInit{
     this.getProduits(this.pageIndex, this.pageSize);
   }
 
-  ngAfterViewInit() {
-    // this.produits.paginator = this.paginator;
-  }
-
   getProduits(page:number,pageSize:number){
     this.isLoading = true
     this.produitService.list('produits', page, pageSize).subscribe({
       next:(response)=>{
         if(response){
           this.isLoading = false;
-          // this.produits.data = response.data.content;
           this.dataSource = new MatTableDataSource(response.data.content);
           this.length = response.data.totalElements;
 
@@ -97,9 +89,8 @@ export class ProduitComponent implements OnInit{
       }
     })
     this.matDialogRef.afterClosed().subscribe((resp: any) => {
-      //this.getProduits()
       if(resp){
-        // this.produits.data = [resp, ...this.produits.data];
+        this.getProduits(this.pageIndex, this.pageSize);
       }
     });
   }
@@ -115,26 +106,14 @@ export class ProduitComponent implements OnInit{
       }
     })
     this.matDialogRef.afterClosed().subscribe((resp: any) => {
-     // this.getProduits()
       if(resp){
-        // this.produits.data = [resp, ...this.produits.data.filter(produit => produit.id !== item.id)];
+        this.getProduits(this.pageIndex, this.pageSize);
       }
     });
   }
 
   getClassStatus(badge: Matiere){
     return this.badgerService.getClassStatus(badge)
-  }
-
-  displayPhoto(image: string){
-    this.matDialogRef = this.matDialog.open(DisplayPhotoComponent, {
-      panelClass: 'event-form-dialog',
-      minWidth: '30rem',
-      height: '30rem',
-      data:{
-        image: image
-      }
-    })
   }
 
   deleteProduit(element : Produit){
@@ -149,8 +128,7 @@ export class ProduitComponent implements OnInit{
         this.isLoading = true;
         this.produitService.delete(element.id).subscribe({
           next:(response)=>{
-            console.log("res parent", response)
-            // this.produits.data = [...this.produits.data.filter(produit => produit.id !== element.id)];
+            this.getProduits(this.pageIndex, this.pageSize);
             this.snackBarService.sendNotification("Le produit a bien été supprimé", SNACKTYPE.SUCCESS)
           },
           error: (error) => {

@@ -20,14 +20,14 @@ export const routes: Routes = [
           import('./pages/pages.routes').then((m) => m.PagesRoutes),
       },
       {
-        path: 'ventes-produits',
+        path: 'produits',
         loadChildren: () =>
           import('./pages/ui-components/ui-components.routes').then(
             (m) => m.UiComponentsRoutes
           ),
       },
       {
-        path: 'settings',
+        path: 'categories',
         loadChildren: () =>
           import('./pages/extra/extra.routes').then((m) => m.ExtraRoutes),
       },
