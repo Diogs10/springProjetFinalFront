@@ -1,0 +1,107 @@
+<mat-card class="cardWithShadow overflow-hidden">
+  <mat-card-content>
+    <div class="d-flex  justify-content-between flex-lg-row flex-column p-3 border">
+        <mat-card-title class="m-b-4">Gestion des utilisateurs</mat-card-title>
+        <button mat-flat-button color="primary" (click)="openModal()">
+            <span>Nouveau</span>
+            <mat-icon>add_circle</mat-icon>
+        </button>
+    </div>
+      <mat-card-subtitle class="mat-mdc-card-subtitle">{{usersList.data.length}} utilisateurs</mat-card-subtitle>
+  </mat-card-content>
+  <div class="table-responsive">
+    <div class="search-container m-8">
+      <mat-form-field appearance="outline">
+        <mat-label>Recherche</mat-label>
+        <input matInput (input)="applyFilter($event)" placeholder="Rechercher un modèle">
+      </mat-form-field>
+    </div>
+      <table mat-table [dataSource]="usersList" class="w-100">
+          <!-- Profile Column -->
+          <ng-container matColumnDef="fullname">
+              <th mat-header-cell *matHeaderCellDef class="mat-subtitle-1 f-s-14">
+                  Nom complet
+              </th>
+              <td mat-cell *matCellDef="let element">
+                  <div class="d-flex align-items-center">
+                      <div class="m-l-16 product-title">
+                          <h6 class="mat-subtitle-1 text-truncate-2 f-s-14 lh-sm">
+                              {{ element?.first_name }}
+                              &nbsp;
+                              {{ element?.first_name }}
+                          </h6>
+                      </div>
+                  </div>
+              </td>
+          </ng-container>
+
+          <!-- Hour Rate Column -->
+          <ng-container matColumnDef="email">
+              <th mat-header-cell *matHeaderCellDef class="mat-subtitle-1 f-s-14">
+                  Email
+              </th>
+              <td mat-cell *matCellDef="let element">
+                  <p class="text-muted m-b-8 f-s-14 m-t-0">{{ element.email }}</p>
+              </td>
+          </ng-container>
+
+          <!-- Symbol Column -->
+          <ng-container matColumnDef="role">
+              <th mat-header-cell *matHeaderCellDef class="mat-subtitle-1 f-s-14">
+                  Role
+              </th>
+              <td mat-cell *matCellDef="let element">
+                  <span class="{{ getClassStatus(element.user_role.name) }} f-s-12 f-w-500 p-x-10 p-y-4 rounded-pill">
+                      {{ element.user_role.name | uppercase }}
+                  </span>
+              </td>
+          </ng-container>
+
+
+          <ng-container matColumnDef="active">
+            <th mat-header-cell *matHeaderCellDef class="mat-subtitle-1 f-s-14">
+              Est actif
+            </th>
+            <td mat-cell *matCellDef="let element">
+                <span class="{{ element.is_active ?'bg-light-success text-success':'bg-light-error text-error' }} f-s-12 f-w-500 p-x-10 p-y-4 rounded-pill">
+                    {{ element.is_active ? "OUI" : "NON" }}
+                </span>
+            </td>
+          </ng-container>
+
+          <!-- Weight Column -->
+          <ng-container matColumnDef="menu">
+              <th mat-header-cell *matHeaderCellDef class="mat-subtitle-1 f-s-14">
+                Actions
+              </th>
+              <td mat-cell *matCellDef="let element">
+                  <button mat-icon-button [matMenuTriggerFor]="menu"
+                      aria-label="Example icon button with a vertical three dot icon">
+                      <mat-icon>more_vert</mat-icon>
+                  </button>
+                  <mat-menu #menu="matMenu" xPosition="before">
+                      <a (click)="openModal(element)"
+                          class="d-flex align-items-center text-decoration-none p-y-10 p-x-16 mat-body-1 gap-8 cursor-pointer">
+                          <i-tabler name="edit" class="icon-18"></i-tabler>
+                          <span>Edit</span>
+                      </a>
+                    <a (click)="updateStatus(element)"
+                       class="d-flex align-items-center text-decoration-none p-y-10 p-x-16 mat-body-1 gap-8 cursor-pointer">
+                      <i-tabler name="{{!element.is_active ? 'check' : 'x'}}" class="icon-18"></i-tabler>
+                      <span>{{element.is_active ? "Désactiver" : "Activer"}}</span>
+                    </a>
+                      <a (click)="deleteUser(element)"
+                          class="d-flex align-items-center text-decoration-none p-y-10 p-x-16 mat-body-1 gap-8 cursor-pointer">
+                          <i-tabler name="trash" class="icon-18"></i-tabler>
+                          <span>Delete</span>
+                      </a>
+                  </mat-menu>
+              </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    <mat-paginator [pageSizeOptions]="[3, 6, 10]" showFirstLastButtons></mat-paginator>
+  </div>
+  </mat-card>

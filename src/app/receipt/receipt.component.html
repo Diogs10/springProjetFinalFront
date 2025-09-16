@@ -1,0 +1,55 @@
+<div class="modal-content bg-white text-dark p-4 rounded shadow-lg">
+    <!-- En-tête -->
+    <div class="text-center mb-3">
+      <img src="assets/images/logos/logo.png" alt="Rio Gold Logo" class="img-fluid" style="max-width: 150px;">
+    </div>
+    <div class="modal-header border-bottom text-center d-flex flex-column">
+      <h5 class="modal-title fw-bold w-100">Rio Gold</h5>
+    </div>
+  
+    <!-- Contenu principal -->
+    <div class="modal-body">
+      <div class="container">
+        <div class="row text-center">
+          <div class="col">
+            <p class="text-danger fs-4 fw-bold">UNPAID</p>
+          </div>
+        </div>
+  
+        <hr>
+  
+        <!-- Informations client -->
+        <div class="row">
+          <div class="col-6">
+            <p><strong>Token No:</strong> {{ tokenNumber }}</p>
+            <p><strong>Customer:</strong> {{ customerName }}</p>
+          </div>
+          <div class="col-6 text-end">
+            <p><strong>Date:</strong> {{ date }}</p>
+            <p><strong>Seller:</strong> {{ sellerName }}</p>
+          </div>
+        </div>
+  
+        <hr>
+  
+        <!-- Détails du montant -->
+        <div class="row">
+          <div class="col-6">
+            <p>Sub Total:</p>
+            <p>Sales Tax:</p>
+            <p class="fw-bold">Final Total:</p>
+          </div>
+          <div class="col-6 text-end">
+            <p>{{ subTotal }}</p>
+            <p>{{ salesTax }}</p>
+            <p class="fw-bold text-primary">{{ finalTotal }}</p>
+          </div>
+        </div>
+  
+        <hr>
+        
+        <p class="text-center text-muted fst-italic mt-3">Thanks for shopping</p>
+      </div>
+    </div>
+  </div>
+  

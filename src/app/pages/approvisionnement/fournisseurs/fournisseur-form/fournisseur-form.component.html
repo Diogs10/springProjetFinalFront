@@ -1,0 +1,42 @@
+<div class="modal">
+    <div class="modal-title">
+      <div class="title">{{modalTitle}}</div>
+      <mat-icon class="closeBtn" (click)="matDialogRef.close()">close</mat-icon>
+    </div>
+    <mat-card class="cardWithShadow theme-card">
+      <mat-card-content class="b-t-1">
+        <form [formGroup]="fournisseurForm" (ngSubmit)="onSubmit()">
+          <div class="row">
+            <!-- Prénom du fournisseur -->
+            <div class="col-12">
+              <mat-label class="f-w-600 m-b-8 d-block">Prénom du fournisseur</mat-label>
+              <mat-form-field appearance="outline" class="w-100" color="primary">
+                <input matInput placeholder="Prénom du fournisseur" formControlName="prenom" />
+                <mat-error *ngIf="fournisseurForm.get('prenom')?.touched && fournisseurForm.get('prenom')?.invalid">
+                  Le prénom du fournisseur est obligatoire
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <!-- Nom du fournisseur -->
+            <div class="col-12">
+              <mat-label class="f-w-600 m-b-8 d-block">Nom du fournisseur</mat-label>
+              <mat-form-field appearance="outline" class="w-100" color="primary">
+                <input matInput placeholder="Nom du fournisseur" formControlName="nom" />
+                <mat-error *ngIf="fournisseurForm.get('nom')?.touched && fournisseurForm.get('nom')?.invalid">
+                  Le nom du fournisseur est obligatoire
+                </mat-error>
+              </mat-form-field>
+            </div>  
+          </div>
+          <!-- Boutons d'action -->
+          <div class="m-t-12">
+            <button *ngIf="action == 'new'" mat-flat-button color="primary" class="m-r-8" [disabled]="!fournisseurForm.valid">Ajouter</button>
+            <button *ngIf="action == 'edit'" mat-flat-button color="primary" class="m-r-8" [disabled]="!fournisseurForm.valid">Modifier</button>
+            <button mat-stroked-button color="warn" (click)="onCancel()">Annuler</button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  

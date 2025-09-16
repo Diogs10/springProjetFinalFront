@@ -1,0 +1,63 @@
+<div class="modal">
+    <div class="modal-title">
+      <div class="title">{{modalTitle}}</div>
+      <mat-icon class="closeBtn" (click)="matDialogRef.close()">close</mat-icon>
+    </div>
+    <mat-card class="cardWithShadow theme-card">
+      <mat-card-content class="b-t-1">
+        <form [formGroup]="marqueForm" (ngSubmit)="onSubmit()">
+          <div class="row">
+            <!-- marque name -->
+            <div class="col-12 col-md-6">
+              <mat-label class="f-w-600 m-b-8 d-block">Marque</mat-label>
+              <mat-form-field appearance="outline" class="w-100" color="primary">
+                <input matInput placeholder="Nom de la marque" formControlName="marque" />
+                <mat-error *ngIf="marqueForm.get('marque')?.touched && marqueForm.get('marque')?.invalid">
+                  Le nom de la marque est obligatoire
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <!-- Purete de la marque -->
+            <div class="col-12 col-md-6">
+              <mat-label class="f-w-600 m-b-8 d-block">Pureté</mat-label>
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-select formControlName="purete">
+                  <mat-option *ngFor="let purete of puretes" [value]="purete.id" >
+                    {{ purete.purete }} K
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="marqueForm.get('purete')?.touched && marqueForm.get('purete')?.invalid">
+                  La purete de marque est obligatoire
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+            <!-- Prix de la marque -->
+            <div class="col-12">
+            <mat-label class="f-w-600 m-b-8 d-block">Prix de la marque</mat-label>
+            <mat-form-field appearance="outline" class="w-100" color="primary">
+                <input type="number" matInput placeholder="prix de la marque" formControlName="prix" />
+                <mat-error *ngIf="marqueForm.get('prix')?.touched && marqueForm.get('prix')?.invalid">
+                    Le prix de la marque est obligatoire
+                </mat-error>
+            </mat-form-field>
+            </div>
+          <!-- Boutons d'action -->
+          <div class="m-t-12">
+              <button mat-flat-button color="primary" class="m-r-8" [disabled]="!marqueForm.valid">
+                @if (!isLoading){
+                  @if(action == 'new'){
+                    <span>Ajouter</span>
+                  } @else {
+                    Modifier
+                  }
+                } @else {
+                  <mat-spinner *ngIf="isLoading" diameter="20" class="general-loader"></mat-spinner>
+                }
+              </button>
+            <button mat-stroked-button color="warn" type="button" (click)="onCancel()">Annuler</button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>

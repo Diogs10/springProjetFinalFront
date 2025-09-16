@@ -1,0 +1,128 @@
+<div class="modal">
+    <div class="modal-title">
+      <div class="title">{{modalTitle}}</div>
+      <mat-icon class="closeBtn" (click)="matDialogRef.close()">close</mat-icon>
+    </div>
+    <mat-card class="cardWithShadow theme-card">
+      <mat-card-content class="b-t-1">
+        <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+          <div class="row">
+            <!-- Prénom -->
+            <div class="col-12 col-md-6">
+              <mat-label class="f-w-600 m-b-8 d-block">Prénom (s)</mat-label>
+              <mat-form-field appearance="outline" class="w-100" color="primary">
+                <input matInput placeholder="Prénom" formControlName="first_name" />
+                <mat-error *ngIf="userForm.get('first_name')?.touched && userForm.get('first_name')?.invalid">
+                  Prénom requis
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <!-- Nom -->
+            <div class="col-12 col-md-6">
+              <mat-label class="f-w-600 m-b-8 d-block">Nom</mat-label>
+              <mat-form-field appearance="outline" class="w-100" color="primary">
+                <input matInput placeholder="Nom" formControlName="last_name" />
+                <mat-error *ngIf="userForm.get('last_name')?.touched && userForm.get('last_name')?.invalid">
+                  Nom requis
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <!-- Email -->
+            <div class="col-12 col-md-6">
+              <mat-label class="f-w-600 m-b-8 d-block">Email</mat-label>
+              <mat-form-field appearance="outline" class="w-100" color="primary">
+                <input matInput placeholder="Email" formControlName="email" />
+                <mat-error *ngIf="userForm.get('email')?.touched && userForm.get('email')?.invalid">
+                  <span *ngIf="userForm.get('email')?.hasError('required')">Email requis</span>
+                  <span *ngIf="userForm.get('email')?.hasError('email')">Format d'email invalide</span>
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <!-- Nom d'utilisateur -->
+            <div class="col-12 col-md-6">
+              <mat-label class="f-w-600 m-b-8 d-block">Nom d'utilisateur</mat-label>
+              <mat-form-field appearance="outline" class="w-100" color="primary">
+                <input matInput placeholder="Nom d'utilisateur" formControlName="username" />
+                <mat-error *ngIf="userForm.get('username')?.touched && userForm.get('username')?.invalid">
+                  Nom d'utilisateur requis
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <!-- Numéro de téléphone -->
+            <div class="col-12 col-md-6">
+              <mat-label class="f-w-600 m-b-8 d-block">Numéro de téléphone</mat-label>
+              <mat-form-field appearance="outline" class="w-100" color="primary">
+                <input matInput placeholder="Numéro de téléphone" formControlName="phone" />
+                <mat-error *ngIf="userForm.get('phone')?.touched && userForm.get('phone')?.invalid">
+                  <span *ngIf="userForm.get('phone')?.hasError('required')">Numéro de téléphone requis</span>
+                  <span *ngIf="userForm.get('phone')?.hasError('pattern')">
+                    Format invalide (77XXXXXXX, 78XXXXXXX, 75XXXXXXX, etc.)
+                  </span>
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <!-- Rôle -->
+            <div class="col-12 col-md-6">
+              <mat-label class="f-w-600 m-b-8 d-block">Rôle</mat-label>
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-select formControlName="user_role">
+                  <mat-option *ngFor="let role of roles" [value]="role.id">
+                    {{ role.name }}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="userForm.get('user_role')?.touched && userForm.get('user_role')?.invalid">
+                  Rôle requis
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <!-- Date de naissance -->
+            <div class="col-12 col-md-6">
+              <mat-label class="f-w-600 m-b-8 d-block">Date de naissance</mat-label>
+              <mat-form-field appearance="outline" class="w-100" color="primary">
+                <input matInput type="date" formControlName="dateNaiss" />
+                <mat-error *ngIf="userForm.get('dateNaiss')?.touched && userForm.get('dateNaiss')?.invalid">
+                  Date de naissance requise
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <!-- Mot de passe -->
+            <div class="col-12 col-md-6">
+              <mat-label class="f-w-600 m-b-8 d-block">Mot de passe</mat-label>
+              <mat-form-field appearance="outline" class="w-100" color="primary">
+                <input matInput type="password" placeholder="Mot de passe" formControlName="password" />
+                <mat-error *ngIf="userForm.get('password')?.touched && userForm.get('password')?.invalid">
+                  <span *ngIf="userForm.get('password')?.hasError('required')">Mot de passe requis</span>
+                  <span *ngIf="userForm.get('password')?.hasError('minlength')">
+                    Mot de passe doit contenir au moins 6 caractères
+                  </span>
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <!-- Boutons d'action -->
+          <div class="m-t-12">
+            <button mat-flat-button color="primary" class="m-r-8" [disabled]="!userForm.valid">
+              @if (!isLoading){
+                @if(action == 'new'){
+                  <span>Ajouter</span>
+                } @else {
+                  Modifier
+                }
+              } @else {
+                <mat-spinner *ngIf="isLoading" diameter="20" class="general-loader"></mat-spinner>
+              }
+            </button>
+            <button mat-stroked-button color="warn" (click)="onCancel()">Cancel</button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>

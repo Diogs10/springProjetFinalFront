@@ -1,0 +1,21 @@
+.custom-dialog-container .mat-dialog-container {
+    padding: 0;
+    border-radius: 15px;
+    background: #1e1e1e;
+    color: white;
+    max-width: 50vw !important;
+    width: 50vw !important;
+    min-height: 60vh;
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+  
+  .modal-content {
+    border-radius: 15px;
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .btn-close {
+    filter: invert(1);
+  }
+  

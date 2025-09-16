@@ -1,0 +1,137 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.error-message{
+    color: red;
+    font-size: 12px;
+    margin-top: 10px;
+}
+
+.mat-mdc-progress-spinner .mdc-circular-progress__indeterminate-circle-graphic{
+    stroke: white !important;
+}
+
+/* Cible la scrollbar pour tous les éléments */
+::-webkit-scrollbar {
+    width: 10px; /* Largeur de la scrollbar */
+    height: 10px; /* Hauteur de la scrollbar horizontale */
+  }
+  
+  /* Couleur de l'arrière-plan de la scrollbar */
+  ::-webkit-scrollbar-track {
+    background: #f4f4f4; /* Couleur claire */
+    border-radius: 10px;
+  }
+  
+  /* Couleur de la poignée (thumb) */
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(45deg, blue, #00A1FF); /* Dégradé */
+    border-radius: 10px;
+    border: 2px solid #f4f4f4; /* Ajoute un bord clair pour un effet "incrusté" */
+  }
+  
+  /* Couleur au survol */
+  ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(45deg, #4b0fcb, #1a57fc); /* Dégradé plus foncé */
+  }
+  
+  /* Pour une compatibilité avec Firefox */
+  .scrollbar-style {
+    scrollbar-width: thin; /* Taille fine */
+    scrollbar-color: #6a11cb #f4f4f4; /* Poignée et arrière-plan */
+  }
+
+.modal{
+}
+
+.modal-title{
+  padding: 10px 20px;
+  background-color: #00A1FF;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #FFFFFF;
+  .title{
+    font-size: 18px;
+  }
+}
+
+.mycssSnackbarRed {
+  font-size: 13px !important;
+  color: #FFFFFF !important;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  background-color: red !important;
+}
+
+.mycssSnackbarGreen {
+  font-size: 14px !important;
+  color: #FFFFFF !important;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  background-color: #43a14c !important;
+}
+
+.mycssSnackbarYellow {
+  font-size: 14px !important;
+  color: #FFFFFF !important;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  background-color: yellow !important;
+}
+
+.text-pink {
+  color: #FF69B4; 
+}
+
+.bg-light-pink {
+  color: #FF69B4; 
+  opacity: .5;
+}
+
+.custom-file-upload .file-input-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.custom-file-upload button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.custom-file-upload .file-name {
+  flex-grow: 1;
+  font-size: 0.9rem;
+  color: #6c757d;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+textarea{
+  resize: none;
+}
+
+.icone{
+  cursor: pointer;
+}
+
+.padding-bottom-1{
+  padding-bottom: 0.25rem;
+}
+
+.padding-bottom-2{
+  padding-bottom: 0.5rem;
+}
+
+.padding-bottom-3{
+  padding-bottom: 1rem;
+}
+
+.padding-bottom-4{
+  padding-bottom: 1.5rem;
+}
+
+.padding-bottom-5{
+  padding-bottom: 6rem;
+}
