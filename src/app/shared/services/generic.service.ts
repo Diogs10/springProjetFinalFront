@@ -53,14 +53,12 @@ export abstract class GenericService <T>{
   addWithImage(data : object) : Observable<T>{
     return this.http.post<T>(`${environment.baseURL}/${this.uriPost()}`, data).pipe(
       tap(res=>{
-        console.log("res", res)
       })
     )
   }
   updateWithImage(data : object, id : string | number) : Observable<T>{
     return this.http.put<T>(`${environment.baseURL}/${this.uriPut()+id.toString()}`, data).pipe(
       tap(res=>{
-        console.log("res", res)
       })
     )
   }

@@ -19,11 +19,8 @@ import { ProduitService } from '../services/produit.service';
 import { MATIERES_POSSIBLES } from 'src/app/shared/constantes/matieres';
 import { Categorie } from 'src/app/pages/extra/categories/categorie';
 import { CategorieService } from 'src/app/pages/extra/categories/services/categorie.service';
-import { Marque } from 'src/app/pages/extra/marque/marque';
-import { Modele } from 'src/app/pages/extra/modele/modele';
 import { GENDER_POSSIBLES } from 'src/app/shared/constantes/genders';
 import { SELECT } from 'src/app/enums/select-type';
-import { Purete } from 'src/app/pages/extra/purete/purete';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
@@ -56,13 +53,9 @@ export class ProduitFormComponent implements OnInit{
   modalTitle: string | null;
   matieresList: SELECT[] = MATIERES_POSSIBLES;
   categorieList: Categorie[];
-  marqueList: Marque[];
-  modeleList: Modele[];
-  pureteList: Purete[];
   genresPossible: SELECT[] = GENDER_POSSIBLES;
   selectedImage : File;
   selectedProduit : number = 0;
-  steps={step1:1,step2:2,step3:3,}
   categories: any[] = [];
   isLoading : boolean = false;
   constructor(

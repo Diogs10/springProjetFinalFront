@@ -106,7 +106,6 @@ export class CategorieComponent implements OnInit{
         }
       })
       this.matDialogRef.afterClosed().subscribe((resp: any) => {
-        console.log("resr parent", resp)
         if(resp != null){
           this.getCategories(this.pageIndex, this.pageSize);
         }
@@ -115,7 +114,6 @@ export class CategorieComponent implements OnInit{
 
 
   updateCategorie(element : Categorie){
-    console.log(element);
     this.matDialogRef = this.matDialog.open(FormCategorieComponent, {
       panelClass: 'event-form-dialog',
       minWidth: '40rem',
@@ -127,7 +125,6 @@ export class CategorieComponent implements OnInit{
     })
 
     this.matDialogRef.afterClosed().subscribe((resp: any) => {
-      console.log("resr parent", resp)
       if(resp != null){
         this.getCategories(this.pageIndex, this.pageSize);
       }

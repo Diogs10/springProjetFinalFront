@@ -31,11 +31,6 @@ export const routes: Routes = [
         loadChildren: () =>
           import('./pages/extra/extra.routes').then((m) => m.ExtraRoutes),
       },
-      {
-        path: 'approvisionnement',
-        loadChildren: () =>
-          import('./pages/approvisionnement/approvisionnement.routes').then((m) => m.ApprovisionnementRoutes),
-      },
     ],
   },
   {

@@ -12,6 +12,8 @@ import { MaterialModule } from '../../../material.module';
 import { MatButtonModule } from '@angular/material/button';
 import { AuthService } from '../services/auth.service';
 import { CommonModule } from '@angular/common';
+import { SnackService } from 'src/app/shared/services/snack.service';
+import { SNACKTYPE } from 'src/app/enums/snack-type';
 
 @Component({
   selector: 'app-side-login',
@@ -29,7 +31,8 @@ import { CommonModule } from '@angular/common';
 export class AppSideLoginComponent implements OnInit {
   constructor(private router: Router,
               private formBuilder: FormBuilder,
-              private _authService: AuthService
+              private _authService: AuthService,
+              private snackBarService: SnackService
   ) {
 
   }
@@ -70,7 +73,6 @@ export class AppSideLoginComponent implements OnInit {
     this.isLoading = true;
     this._authService.signIn(this.signInForm.value).subscribe({
       next:(response)=>{
-        console.log('response', response);
         if(response['statusCode'] === 200) {
           this.isLoading = false
           this._authService.setItemInlocalStorage("user",response.data);
@@ -79,6 +81,7 @@ export class AppSideLoginComponent implements OnInit {
         }
       },
       error:(error)=>{
+        this.snackBarService.sendNotification(error.message, SNACKTYPE.ERROR);
         this.displayBadCredentialsError = true;
         this.isLoading = false
       }

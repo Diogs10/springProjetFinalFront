@@ -114,7 +114,6 @@ export class UserFormComponent implements OnInit {
             : this.userService.addUser(user);
           request$.subscribe({
             next: (response ) => {
-              console.log("response", response)
               this.matDialogRef.close(response.data);
               this.snackBarService.sendNotification(
                 this.action === ACTIONTYPE.EDIT ? "Utilisateur modifié avec succès" : "Utilisateur ajouté avec succès",
@@ -122,7 +121,6 @@ export class UserFormComponent implements OnInit {
               );
             },
             error: (error) => {
-              console.log("error user", error)
               this.snackBarService.sendNotification("Erreur : "+error.meesage, SNACKTYPE.ERROR);
             }
           });

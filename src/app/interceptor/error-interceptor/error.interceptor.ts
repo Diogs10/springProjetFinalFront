@@ -8,16 +8,14 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   let router = inject(Router);
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
-      console.log("error", error)
       let err = error.error;
-      console.log("err", err)
       if (error.status == 401 && error.statusText == "Unauthorized") {
         localStorage.clear();
         router.navigateByUrl('/auth');
       }
       if (error.status == 400) {
         err = {
-          message : err['errors'] ? parseErrors(err['errors']) : err['error'] 
+          message : err['errors'] ? parseErrors(err['errors']) : err['error']
         };
       }
 
@@ -27,7 +25,6 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
           status: false,
           data: []
         }
-        console.log("error ee", err)
       }
       throw (err);
     })
