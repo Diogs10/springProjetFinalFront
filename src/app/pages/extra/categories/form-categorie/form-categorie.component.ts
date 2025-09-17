@@ -29,7 +29,6 @@ import {SNACKTYPE} from "../../../../enums/snack-type";
     MatLabel,
     NgIf,
     ReactiveFormsModule,
-    NgOptimizedImage,
     MatProgressSpinner
   ],
   templateUrl: './form-categorie.component.html',
